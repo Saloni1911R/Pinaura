@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Pinaura • Dashboard</title>
+
+<meta name="description" content="Pinaura Analytics Dashboard">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+<link href="assets/css/style.css" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="no-scroll">
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg glassy-nav fixed-top">
+<div class="container">
+
+<a class="navbar-brand fw-bold text-indigo" href="index.html">
+🌸 Pinaura
+</a>
+
+<div class="ms-auto d-flex gap-2">
+<a href="admin.html" class="btn btn-light rounded-pill">
+⚙️ Admin Panel
+</a>
+
+<button id="logoutBtn" class="btn btn-danger rounded-pill">
+Logout
+</button>
+</div>
+
+</div>
+</nav>
+
+<!-- Dashboard -->
+<main class="container py-5 mt-5">
+
+<h2 class="fw-bold text-gradient text-center mb-5">
+Pinaura Analytics Dashboard 📈
+</h2>
+
+<!-- Stats -->
+<div class="row g-4">
+
+<div class="col-md-4">
+<div class="stat-card text-center">
+<h5>👥 Total Users</h5>
+<p id="usersCount">0</p>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="stat-card text-center">
+<h5>🖼️ Total Pins</h5>
+<p id="pinsCount">0</p>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="stat-card text-center">
+<h5>💖 Total Likes</h5>
+<p id="likesCount">0</p>
+</div>
+</div>
+
+</div>
+
+<!-- Charts -->
+<div class="row mt-5 g-4">
+
+<div class="col-lg-6">
+<div class="card glassy-card p-3 shadow-sm">
+<h5 class="fw-bold text-center mb-3">Pins by Category</h5>
+<canvas id="categoryChart"></canvas>
+</div>
+</div>
+
+<div class="col-lg-6">
+<div class="card glassy-card p-3 shadow-sm">
+<h5 class="fw-bold text-center mb-3">Monthly Uploads</h5>
+<canvas id="uploadChart"></canvas>
+</div>
+</div>
+
+</div>
+
+</main>
+
+<!-- Cat -->
+<div class="cat-helper">
+<img src="assets/img/cat.png" alt="Paws the cat">
+</div>
+
+<div class="cat-bubble">
+Here’s your progress, meow~ 🐾
+</div>
+
+<!-- Footer -->
+<footer class="footer text-center py-3 mt-5">
+<p class="mb-0">© <span id="year"></span> Pinaura Dashboard</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+document.getElementById("year").textContent = new Date().getFullYear();
+
+
+// Animated Counter
+function animateCounter(id, target, suffix = "") {
+let count = 0;
+const element = document.getElementById(id);
+const speed = target / 60;
+
+const interval = setInterval(() => {
+count += speed;
+
+if (count >= target) {
+count = target;
+clearInterval(interval);
+}
+
+element.textContent = Math.floor(count) + suffix;
+}, 20);
+}
+
+animateCounter("usersCount", 132);
+animateCounter("pinsCount", 248);
+animateCounter("likesCount", 1400, "+");
+
+
+// Doughnut Chart
+new Chart(document.getElementById("categoryChart"), {
+type: "doughnut",
+data: {
+labels: ["Art", "Travel", "Food", "Fashion", "Photography", "Tech", "DIY", "Fitness"],
+datasets: [{
+data: [45, 30, 25, 20, 35, 15, 18, 10],
+backgroundColor: [
+"#A8E6CF",
+"#DCEDC1",
+"#FFD3B6",
+"#FFAAA5",
+"#FF8B94",
+"#D0B3FF",
+"#C2E9FB",
+"#B5EAD7"
+],
+borderWidth: 0
+}]
+},
+options: {
+responsive: true,
+plugins: {
+legend: {
+position: "bottom"
+}
+}
+}
+});
+
+
+// Line Chart
+new Chart(document.getElementById("uploadChart"), {
+type: "line",
+data: {
+labels: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+datasets: [{
+label: "Uploads",
+data: [20,25,35,40,38,50,47,55,60,70,80,90],
+fill: true,
+borderColor: "#FF8B94",
+backgroundColor: "rgba(255,139,148,0.25)",
+tension: 0.4,
+pointRadius: 4
+}]
+},
+options: {
+responsive: true,
+plugins: {
+legend: {
+display: false
+}
+},
+scales: {
+y: {
+beginAtZero: true
+}
+}
+}
+});
+
+
+// Logout
+document.getElementById("logoutBtn").addEventListener("click", () => {
+localStorage.removeItem("pinauraUser");
+window.location.href = "login.html";
+});
+
+});
+</script>
+
+</body>
+</html>
