@@ -7,79 +7,140 @@
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-
-  <link href="assets/css/style.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <link href="./assets/css/style.css" rel="stylesheet">
 </head>
 
 <body class="no-scroll">
 
   <nav class="navbar navbar-expand-lg glassy-nav fixed-top">
     <div class="container">
-      <a class="navbar-brand fw-bold text-indigo" href="index.html">🌸 Pinaura</a>
-      <div class="ms-auto">
-        <span class="btn btn-light rounded-pill disabled">Login First</span>
-      </div>
+      <a class="navbar-brand fw-bold" href="index.html" style="color: #6a1b9a;">🌸 Pinaura</a>
+      <button class="btn btn-sm btn-outline-secondary rounded-pill" id="nav-login-btn">Login First</button>
     </div>
   </nav>
 
   <main class="login-section d-flex align-items-center justify-content-center vh-100">
-    <div class="login-card text-center p-4 rounded-4 shadow-lg">
-      <h2 class="fw-bold text-gradient mb-3">Welcome to Pinaura!</h2>
-      <p class="text-muted small mb-4">Sign in to continue your creative journey 🌈</p>
+    <div class="login-card text-center p-5 shadow-lg">
+      
+      <h2 class="text-gradient mb-3" id="auth-title">Create Account</h2>
+      <p class="text-muted small mb-4" id="auth-subtitle">Sign in to continue your creative journey 🌈</p>
 
-      <form class="text-start">
-        <div class="mb-3">
+      <form id="auth-form" class="text-start">
+        <div class="mb-3" id="name-field">
           <label class="form-label fw-semibold">Display Name</label>
-          <input type="text" class="form-control rounded-pill" placeholder="Your name" required>
+          <input type="text" id="user-name" class="form-control rounded-pill" placeholder="Your name">
         </div>
 
         <div class="mb-3">
           <label class="form-label fw-semibold">Email</label>
-          <input type="email" class="form-control rounded-pill" placeholder="you@example.com" required>
+          <input type="email" id="user-email" class="form-control rounded-pill" placeholder="you@example.com" required>
         </div>
 
         <div class="mb-3">
-          <label class="form-label fw-semibold">Choose Interests</label>
-          <div class="d-flex flex-wrap gap-2 justify-content-center">
-            <button type="button" class="btn btn-sm interest-btn">🎨 Art</button>
-            <button type="button" class="btn btn-sm interest-btn">✈️ Travel</button>
-            <button type="button" class="btn btn-sm interest-btn">🍳 Food</button>
-            <button type="button" class="btn btn-sm interest-btn">📷 Photography</button>
-            <button type="button" class="btn btn-sm interest-btn">👗 Fashion</button>
-            <button type="button" class="btn btn-sm interest-btn">🧠 Tech</button>
-            <button type="button" class="btn btn-sm interest-btn">💪 Fitness</button>
-            <button type="button" class="btn btn-sm interest-btn">🧩 DIY</button>
+          <label class="form-label fw-semibold">Password</label>
+          <input type="password" id="user-password" class="form-control rounded-pill" placeholder="••••••••" required minlength="6">
+        </div>
+
+        <div class="mb-3 text-center" id="interests-field">
+          <label class="form-label fw-semibold d-block text-start">Choose Interests</label>
+          <div class="d-flex flex-wrap gap-2 justify-content-center mt-2">
+            <button type="button" class="btn btn-sm interest-btn px-3">🎨 Art</button>
+            <button type="button" class="btn btn-sm interest-btn px-3">✈️ Travel</button>
+            <button type="button" class="btn btn-sm interest-btn px-3">🍳 Food</button>
+            <button type="button" class="btn btn-sm interest-btn px-3">🧠 Tech</button>
           </div>
         </div>
 
         <div class="text-center mt-4">
-          <a href="home.html" class="btn btn-lg pastel-btn rounded-pill px-4">Continue →</a>
+          <button type="submit" id="main-btn" class="btn btn-lg pastel-btn rounded-pill px-5 w-100">
+            Continue →
+          </button>
         </div>
       </form>
 
       <div class="small text-muted mt-4">
-        New user? Just fill in and click continue — it’s that easy 💫
+        <span id="toggle-text">Already have an account?</span> 
+        <a href="#" id="toggle-link" class="fw-bold text-decoration-none text-indigo">Login</a>
       </div>
     </div>
   </main>
 
-  <div class="cat-helper">
-    <img src="assets/img/cat.png" alt="Pinaura Cat" />
-  </div>
-
-  <div class="cat-bubble">Meow! Don’t forget your interests 🐾</div>
-
-  <footer class="footer text-center mt-5">
-    <p class="mb-0">© <span id="year"></span> Pinaura</p>
+  <footer class="footer text-center fixed-bottom">
+    <p class="mb-0 text-muted small">© <span id="year"></span> Pinaura</p>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/js/script.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyC5xJTgU7Ii_65gtASDaGO_LGSGVTJnxU4",
+      authDomain: "pinaura-b4218.firebaseapp.com",
+      projectId: "pinaura-b4218",
+      storageBucket: "pinaura-b4218.firebasestorage.app",
+      messagingSenderId: "166775569548",
+      appId: "1:166775569548:web:728976ae78bc4ddc1c0fa9",
+      measurementId: "G-YBT1F59RG0"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const authForm = document.getElementById('auth-form');
+    const authTitle = document.getElementById('auth-title');
+    const nameField = document.getElementById('name-field');
+    const interestsField = document.getElementById('interests-field');
+    const mainBtn = document.getElementById('main-btn');
+    const toggleLink = document.getElementById('toggle-link');
+    const toggleText = document.getElementById('toggle-text');
+    const navLoginBtn = document.getElementById('nav-login-btn');
+
+    let isLoginMode = false;
+
+    // Interest buttons toggle logic
+    document.querySelectorAll('.interest-btn').forEach(btn => {
+      btn.addEventListener('click', () => btn.classList.toggle('active-interest'));
+    });
+
+    // Toggle Function
+    function switchMode() {
+      isLoginMode = !isLoginMode;
+      authTitle.innerText = isLoginMode ? "Login to Pinaura" : "Create Account";
+      nameField.style.display = isLoginMode ? 'none' : 'block';
+      interestsField.style.display = isLoginMode ? 'none' : 'block';
+      mainBtn.innerText = isLoginMode ? "Login →" : "Continue →";
+      toggleText.innerText = isLoginMode ? "New to Pinaura?" : "Already have an account?";
+      toggleLink.innerText = isLoginMode ? "Create Account" : "Login";
+    }
+
+    toggleLink.addEventListener('click', (e) => { e.preventDefault(); switchMode(); });
+    navLoginBtn.addEventListener('click', (e) => { 
+        e.preventDefault(); 
+        if(!isLoginMode) switchMode(); 
+    });
+
+    authForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('user-email').value;
+      const pass = document.getElementById('user-password').value;
+
+      if (isLoginMode) {
+        signInWithEmailAndPassword(auth, email, pass)
+          .then(() => { window.location.href = "home.html"; })
+          .catch((err) => alert("Login failed: " + err.message));
+      } else {
+        createUserWithEmailAndPassword(auth, email, pass)
+          .then(() => {
+            alert("Success! Welcome to Pinaura.");
+            window.location.href = "home.html";
+          })
+          .catch((err) => alert("Registration failed: " + err.message));
+      }
+    });
+
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
-
 </body>
 </html>
